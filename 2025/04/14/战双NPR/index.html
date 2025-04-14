@@ -60,4 +60,23 @@ lightGallery(document.getElementById('post-bg'), {
  }
 });
 document.addEventListener("pjax:complete", reset);reset()})</script><meta name="generator" content="Hexo 7.3.0"></head><body><div class="loading" style="opacity: 0;"><div class="loadingBar left"></div><div class="loadingBar right"></div></div><main><header class="closed"><div class="navBtn"><i class="navBtnIcon"><span class="navBtnIconBar"></span><span class="navBtnIconBar"></span><span class="navBtnIconBar"></span></i></div><nav><div class="navItem" id="search-header"><span class="navItemTitle"><input autocomplete="off" autocorrect="off" autocapitalize="none" placeholder="Search" spellcheck="false" maxlength="50" type="text" id="search-input"></span></div><div class="navItem" id="search-holder"></div><div class="search-popup" tabindex="0"><div id="search-result"></div></div><ol class="navContent"><li class="navItem"><a class="navBlock" href="/"><span class="navItemTitle">Home</span></a></li><li class="navItem" matchdata="categories,tags"><a class="navBlock" href="/archives/"><span class="navItemTitle">Archives</span></a></li></ol></nav></header><article><div id="post-bg"><div id="post-title"><h1></h1></div><hr><div id="post-content"><p>基于战双帕弥什角色的PBR+NPR渲染<br>引擎:Unity<br>渲染管线:Urp 14.0.10 采用forwardlit向前渲染管线</p>
+<p>实现了基于 Albedo、Normal Map、PBR Mask（Roughness&#x2F;Metallic&#x2F;AO）的物理基础光照计算。</p>
+<p>集成了 NPR 风格的多级阴影控制（No Shadow, First Shadow, Second Shadow），支持阈值、颜色及平滑过渡（Smooth Shadow）的自定义。</p>
+<p>实现了可定制的高光（Specular）模型，包括强度、光泽度（Shiness）、颜色、平滑因子及阴影衰减。</p>
+<p>支持环境反射（Cubemap），并可选择性应用旋转。</p>
+<p>整合了自发光（Emission）和辉光（Bloom）效果控制，支持 Flow Map。</p>
+<p>皮肤渲染 (Skin.hlsl, 及 PBR_UP.hlsl &#x2F; HairFront.hlsl 中的皮肤分支)：</p>
+<p>开发了专用的皮肤着色模型，通过 _SkinRamp 纹理实现细腻的卡通肤色过渡。</p>
+<p>支持多层皮肤颜色混合（_SkinColor1 - _SkinColor4, _MutliSkinIntensity, _MutliSkinRate），模拟皮肤的微妙色彩变化。</p>
+<p>实现了针对皮肤的独立阴影和边缘光（Rim Light）颜色与强度控制。</p>
+<p>利用 multi_compile 指令（如 _ENABLE_SKIN, _ENABLE_GI_SKIN）高效管理皮肤渲染特性的开启与关闭。</p>
+<p>轮廓线渲染 (Outline.hlsl)：</p>
+<p>采用基于顶点法线和视距扩展（Vertex Extrusion）的方法生成轮廓线。</p>
+<p>实现了轮廓线宽度、颜色、亮度（Brightness）、辉光叠加（Bloom Add）的可调性。</p>
+<p>加入了基于距离的轮廓线宽度缩放 (_XOutlineDitanceScale) 和 Z 轴偏移 (_XOutlineZOffset) 以优化显示效果。</p>
+<p>集成了简单的距离雾效 (_LinearFogColor, _LinearFogParams)。</p>
+<p>后期处理 (PostProcessing.hlsl)：</p>
+<p>实现了屏幕空间的颜色调整，包括曝光（Exposure）、对比度（Contrast）。</p>
+<p>支持使用用户自定义 LUT (Look-Up Table) 进行色彩分级（Color Grading）。</p>
+<p>(根据 _ConsoleSettings 推断) 可能包含简单的边缘检测或风格化滤镜效果。</p>
 <div id="paginator"></div></div><div id="post-footer"><div id="pages" style="justify-content: flex-end"><div class="footer-link" style="width: 50%;right:1px;border-left:1px #fe2 solid"><a href="/2025/04/14/%E8%89%BE%E5%BE%B7%E9%87%8C%E5%AE%89%E7%9A%84%E6%A2%A6%E5%A2%83/">艾德里安的梦境Demo Prev →</a></div></div></div></div><div class="bottom-btn"><div><a class="i-top" id="to-top" onClick="scrolls.scrolltop();" title="To Top" style="opacity: 0; display: none;">∧ </a><a class="i-color" id="color-mode" onClick="colorMode.change()" title="Change Theme"></a><a onclick="BgmControl()"><svg id="bgm-control" viewBox="0 0 30 34" fill="#18d1ff" style="width: 24px; transition: transform .3s;margin-top: 4px"><path d="M25.998 23.422V11.29h3.999v12.132h-3.999zM19.497 6.234h4.001v22.243h-4.001V6.234zM12.998.867h4v32.978h-4V.867zm-6.5 5.367h4.001v22.243H6.498V6.234zm-6.5 5.056h4v12.132h-4V11.29z"></path></svg><audio id="bgm" src="/audio/bgm.mp3" autoplay loop crossorigin="anonymous"> </audio></a></div></div></article><aside><div id="about"><a href="/" id="logo"><img src="https://ak.hypergryph.com/assets/index/images/ak/pc/faction/1.png" alt="Logo" style="margin:0;border-radius:0;"></a><h1 id="Dr"><a href="/">Muxi</a></h1><div id="description"><p></p></div></div><div id="aside-block"></div><footer><nobr>Published with <a target="_blank" rel="noopener" href="http://hexo.io">Hexo</a></nobr><wbr><nobr> Theme <a target="_blank" rel="noopener" href="https://github.com/Yue-plus/hexo-theme-arknights">Arknights</a></nobr><wbr><nobr> by <a target="_blank" rel="noopener" href="https://github.com/Yue-plus">Yue_plus</a></nobr></footer></aside></main><canvas id="canvas-dust"></canvas></body></html>
