@@ -20,53 +20,31 @@
 
 @font-face {
     font-family: 'Dobra W05 Light';
-    src: url('/webfonts/5163911/562a4cf8-7937-434b-9636-aad7d46df946.woff2') format("woff2"), url('/webfonts/5163911/9b929f83-bfbd-42e6-bfd4-8efe3ff5f7c9.woff') format("woff");
+    src: url('/webfonts/5163911/562a4cf8-7937-434b-9636-aad7d46df946.woff2') format("woff2");
     font-display: swap;
 }
 
 @font-face {
     font-family: 'Dobra bold';
-    src: url('/webfonts/dobra/dobra-bold-webfont.woff2') format("woff2"), url('/webfonts/dobra/dobra-bold-webfont.woff') format("woff");
+    src: url('/webfonts/dobra/dobra-bold-webfont.woff2') format("woff2");
     font-weight: 700;
     font-style: normal;
     font-display: swap;
 }
 
+/* Libre Baskerville - Regular only (others missing) */
 @font-face {
     font-family: 'Libre Baskerville';
-    src: url('/webfonts/libre-baskerville/LibreBaskerville-Regular.ttf');
+    src: url('/webfonts/libre-baskerville/LibreBaskerville-Regular.ttf') format('truetype');
     font-weight: 400;
     font-style: normal;
     font-display: swap;
 }
 
-@font-face {
-    font-family: 'Libre Baskerville';
-    src: url('/webfonts/libre-baskerville/LibreBaskerville-Italic.ttf');
-    font-weight: 400;
-    font-style: italic;
-    font-display: swap;
-}
-
-@font-face {
-    font-family: 'Libre Baskerville';
-    src: url('/webfonts/libre-baskerville/LibreBaskerville-Bold.ttf');
-    font-weight: 700;
-    font-style: normal;
-    font-display: swap;
-}
-
+/* Noto Sans SC */
 @font-face {
     font-family: 'Noto Sans SC';
-    src: url('/webfonts/noto-sans-sc/NotoSansSC-Medium-Alphabetic.woff2') format("woff2"), url('/webfonts/noto-sans-sc/NotoSansSC-Medium-Alphabetic.woff') format("woff");
-    font-weight: 500;
-    font-style: normal;
-    font-display: swap;
-}
-
-@font-face {
-    font-family: "Noto Serif SC";
-    src: url('/webfonts/noto-sans-sc/NotoSerifSC-Regular-Alphabetic.woff2') format("woff2"), url('/webfonts/noto-sans-sc/NotoSerifSC-Regular-Alphabetic.woff') format("woff");
+    src: url('/webfonts/noto-sans-sc/NotoSansSC-Medium-Alphabetic.woff2') format("woff2");
     font-weight: 500;
     font-style: normal;
     font-display: swap;

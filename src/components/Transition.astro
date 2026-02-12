@@ -4,11 +4,13 @@
 <div id="transition-overlay" class="fixed inset-0 z-[100] pointer-events-none opacity-0 flex items-center justify-center transition-opacity duration-700 ease-out bg-dark-black">
     <!-- Flare Background -->
     <img src="/images/feld-flash-flare.jpg" class="absolute inset-0 w-full h-full object-cover mix-blend-screen z-10 opacity-80" alt="" />
+    <audio id="transition-sound" src="/sounds/transition.wav" preload="auto" transition:persist></audio>
 </div>
 
 <script>
     document.addEventListener('astro:before-preparation', () => {
         const overlay = document.getElementById('transition-overlay');
+        const audio = document.getElementById('transition-sound') as HTMLAudioElement;
         
         if (overlay) {
             // Ensure transition classes are active
@@ -16,6 +18,11 @@
 
             // Show overlay
             overlay.classList.remove('opacity-0');
+        }
+
+        if (audio) {
+            audio.currentTime = 0;
+            audio.play().catch(e => console.log('Audio play failed:', e));
         }
     });
 
