@@ -1,0 +1,47 @@
+---
+interface Props {
+	title: string;
+	date: string;
+	tags: string[];
+	excerpt: string;
+	href: string;
+}
+
+const { title, date, tags, excerpt, href } = Astro.props;
+---
+
+<article class="w-full mb-16 relative group">
+    <!-- Meta Header (Date & Tags) -->
+    <div class="flex justify-between text-off-white font-headline text-xs tracking-widest mb-2 uppercase opacity-80">
+        <span>{date}</span>
+        <div class="space-x-2">
+            {tags.map((tag, index) => (
+                <span>
+                    <a href={`/tags/${tag}`} class="hover:text-orange transition-colors duration-200 relative z-20">
+                        {tag}
+                    </a>
+                    {index < tags.length - 1 ? ' • ' : ''}
+                </span>
+            ))}
+        </div>
+    </div>
+
+    <!-- Title Block with Brush Background -->
+    <a href={href} class="block relative w-full mb-4 transform -rotate-1 group-hover:rotate-0 transition-transform duration-300 origin-center">
+        <div class="absolute inset-0 bg-no-repeat bg-center bg-[length:100%_100%] z-0" 
+             style="background-image: url('/images/brush-bg-white_kkkkx7.png'); filter: drop-shadow(0 4px 6px rgba(0,0,0,0.3));"></div>
+        <div class="relative z-10 p-6 md:p-8 flex items-center justify-center min-h-[8rem]">
+            <h2 class="text-dark-black font-headline text-2xl md:text-4xl uppercase text-center leading-none">
+                {title}
+            </h2>
+        </div>
+    </a>
+
+    <!-- Excerpt -->
+    <p class="text-off-white font-body text-base md:text-lg leading-relaxed opacity-90">
+        {excerpt}
+    </p>
+
+    <!-- Separator (optional, based on design) -->
+    <div class="w-full h-px bg-off-white/20 mt-8"></div>
+</article>

@@ -1,0 +1,85 @@
+---
+import { getCollection } from 'astro:content';
+import Layout from '../../layouts/Layout.astro';
+import Background from '../../components/Background.astro';
+import Header from '../../components/Header.astro';
+
+export async function getStaticPaths() {
+  const blogEntries = await getCollection('blog');
+  return blogEntries.map(entry => ({
+    params: { slug: entry.slug }, props: { entry },
+  }));
+}
+
+const { entry } = Astro.props;
+const { Content } = await entry.render();
+
+// Format date
+const formattedDate = entry.data.date.toLocaleDateString('en-US', {
+	year: 'numeric',
+	month: 'long',
+	day: '2-digit',
+});
+---
+
+<Layout title={entry.data.title}>
+	<Background />
+	<Header showSearch={false} />
+	
+	<!-- Main Content Wrapper -->
+	<div class="flex flex-col min-h-screen w-full relative z-20 items-center">
+		
+        <!-- Fixed Background Image (Blog-page-1.png) -->
+        <div class="fixed inset-0 z-0 pointer-events-none" 
+             style="background-image: url('/images/Blog-page-1.png'); background-size: cover; background-position: center;">
+        </div>
+
+		<!-- Centered Content Column -->
+		<main class="w-full md:w-[60%] lg:w-[55%] flex-grow relative flex flex-col pt-[6rem] md:pt-[15vh] min-h-screen pb-[95vh]"
+              style="background-image: url('/images/single-page-content-bg_htmvo8.png'); background-repeat: repeat-y; background-position: center top; background-size: 100% auto;">
+            
+            <div class="relative z-10 px-8 md:px-[--spacing-gutter] w-full">
+                
+                <!-- Title Block -->
+                <div class="relative w-full mb-8 -rotate-1 border-image-source: url('/images/brush-bg-white_kkkkx7.png'); border-image-slice: 0 fill;">
+                     <div class="relative z-10 p-6 md:p-8 bg-[url('/images/brush-bg-white_kkkkx7.png')] bg-no-repeat bg-[length:100%_100%]">
+                        <h1 class="text-dark-black font-headline text-3xl md:text-5xl uppercase leading-none tracking-tight">
+                            {entry.data.title}
+                        </h1>
+                    </div>
+                </div>
+
+                <!-- Metadata Row -->
+                <div class="flex flex-col md:flex-row justify-between items-start w-full text-off-white font-headline text-xs tracking-widest uppercase mb-12 opacity-80">
+                    
+                    <!-- Left Column: Date and Author -->
+                    <div class="flex flex-col gap-2 mb-4 md:mb-0">
+                        <time class="text-lg">{formattedDate}</time>
+                        <div class="flex items-center gap-2 mt-2">
+                             <span class="opacity-70">BY:</span>
+                             <span class="text-off-white">{entry.data.author}</span>
+                        </div>
+                    </div>
+
+                    <!-- Right Column: Categories -->
+                    <nav class="flex flex-wrap gap-2 md:justify-end">
+                        {entry.data.tags.map((tag, i) => (
+                            <a href={`/tags/${tag}`} class="hover:text-orange transition-colors duration-200">
+                                {tag}{i < entry.data.tags.length - 1 ? ' • ' : ''}
+                            </a>
+                        ))}
+                    </nav>
+                </div>
+
+                <!-- Body Content -->
+                <article class="font-body text-off-white text-base md:text-[1.0625rem] leading-[1.8] opacity-90 prose prose-invert max-w-none prose-p:mb-6 prose-ul:mb-6 prose-img:rounded-md prose-p:first-of-type:italic prose-p:first-of-type:text-lg prose-p:first-of-type:text-off-white/70">
+                    <Content />
+                </article>
+
+            </div>
+             <!-- Next Post Section would go here -->
+		</main>
+	</div>
+		</main>
+	</div>
+</Layout>

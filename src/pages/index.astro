@@ -1,11 +1,102 @@
 ---
-import Welcome from '../components/Welcome.astro';
+import { getCollection } from 'astro:content';
 import Layout from '../layouts/Layout.astro';
+import Background from '../components/Background.astro';
+import Header from '../components/Header.astro';
+import Portrait from '../components/Portrait.astro';
+import ArchiveItem from '../components/ArchiveItem.astro';
 
-// Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
-// Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
+const allPosts = await getCollection('blog');
+// Sort by date desc
+allPosts.sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+
+// Client-side search (handled during SSR for this example, or via JS if truly static)
+// Since Astro is static by default, this query param check happens at build time for SSG, 
+// OR at runtime for SSR. If output is static, this won't work dynamically without JS.
+// However, for a simple blog, we can use a script to filter DOM elements, 
+// OR simple JS filter if using 'server' output. 
+// Given the user constraint, let's stick to a JS-based filter on the client side 
+// to support static hosting without a backend.
 ---
 
 <Layout>
-	<Welcome />
+	<Background />
+	<Header />
+    <Portrait />
+	
+	<!-- Main Content Wrapper -->
+	<div class="flex flex-col md:flex-row min-h-screen w-full relative z-20">
+        <!-- Spacer for Left Column (Portrait) -->
+        <div class="hidden md:block w-full md:w-[44.44%] flex-shrink-0"></div>
+
+		<main class="w-full md:w-[55.55%] flex-grow relative flex flex-col items-stretch pt-[6rem] md:pt-[14rem] px-8 md:px-[--spacing-gutter] pb-16 min-h-screen" 
+			style="background-image: url('/images/single-page-content-bg_htmvo8.png'); background-repeat: repeat-y; background-position: center top; background-size: 100% auto;">
+            
+            <!-- Search Status (Hidden by default, shown via JS) -->
+            <div id="search-status" class="hidden text-off-white font-headline text-xl mb-8 uppercase tracking-widest opacity-80">
+                Searching for: <span id="search-term" class="text-orange"></span>
+            </div>
+
+            <div id="posts-container" class="flex flex-col gap-12 max-w-3xl mx-auto md:mr-auto md:ml-0">
+                {allPosts.map(post => (
+                    <div class="post-item" 
+                         data-title={post.data.title.toLowerCase()} 
+                         data-tags={post.data.tags.join(' ').toLowerCase()}
+                         data-excerpt={post.data.excerpt?.toLowerCase() || ''}>
+                        <ArchiveItem 
+                            title={post.data.title} 
+                            date={post.data.date.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: '2-digit' })}
+                            tags={post.data.tags}
+                            excerpt={post.data.excerpt}
+                            href={`/posts/${post.slug}`}
+                        />
+                    </div>
+                ))}
+            </div>
+
+            <div id="no-results" class="hidden text-off-white font-body text-lg opacity-70 mt-8">
+                No thoughts found matching your criteria.
+            </div>
+
+            <div class="text-center py-12 font-headline text-2xl uppercase text-off-white/50 tracking-widest hover:text-off-white transition-colors cursor-pointer">
+                Load More...
+            </div>
+		</main>
+	</div>
+
+    <script>
+        // Client-side search logic
+        const urlParams = new URLSearchParams(window.location.search);
+        const query = urlParams.get('q')?.toLowerCase();
+
+        if (query) {
+            const searchStatus = document.getElementById('search-status');
+            const searchTermSpan = document.getElementById('search-term');
+            const noResults = document.getElementById('no-results');
+            const posts = document.querySelectorAll('.post-item');
+            let hasResults = false;
+
+            if (searchStatus && searchTermSpan) {
+                searchStatus.classList.remove('hidden');
+                searchTermSpan.textContent = query;
+            }
+
+            posts.forEach(post => {
+                const title = post.getAttribute('data-title') || '';
+                const tags = post.getAttribute('data-tags') || '';
+                const excerpt = post.getAttribute('data-excerpt') || '';
+
+                if (title.includes(query) || tags.includes(query) || excerpt.includes(query)) {
+                    (post as HTMLElement).classList.remove('hidden');
+                    hasResults = true;
+                } else {
+                    (post as HTMLElement).classList.add('hidden');
+                }
+            });
+
+            if (!hasResults && noResults) {
+                noResults.classList.remove('hidden');
+            }
+        }
+    </script>
 </Layout>

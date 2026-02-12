@@ -1,0 +1,133 @@
+@import "tailwindcss";
+
+@theme {
+    --color-off-white: #eceae2;
+    --color-inactive-white: #9a9a9a;
+    --color-brown: #90270f;
+    --color-purple: #7b61ff;
+    --color-orange: #e55023;
+    --color-light-blue: #00CAC0;
+    --color-cyan: #7effaa;
+    --color-beige: #d3cfbe;
+    --color-dark-black: #010101;
+
+    --font-headline: 'Dobra bold', sans-serif;
+    --font-body: 'Libre Baskerville', serif;
+    --font-ui: 'Dobra W05 Light', sans-serif;
+
+    --spacing-gutter: 1rem;
+}
+
+@font-face {
+    font-family: 'Dobra W05 Light';
+    src: url('/webfonts/5163911/562a4cf8-7937-434b-9636-aad7d46df946.woff2') format("woff2"), url('/webfonts/5163911/9b929f83-bfbd-42e6-bfd4-8efe3ff5f7c9.woff') format("woff");
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Dobra bold';
+    src: url('/webfonts/dobra/dobra-bold-webfont.woff2') format("woff2"), url('/webfonts/dobra/dobra-bold-webfont.woff') format("woff");
+    font-weight: 700;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Libre Baskerville';
+    src: url('/webfonts/libre-baskerville/LibreBaskerville-Regular.ttf');
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Libre Baskerville';
+    src: url('/webfonts/libre-baskerville/LibreBaskerville-Italic.ttf');
+    font-weight: 400;
+    font-style: italic;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Libre Baskerville';
+    src: url('/webfonts/libre-baskerville/LibreBaskerville-Bold.ttf');
+    font-weight: 700;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Noto Sans SC';
+    src: url('/webfonts/noto-sans-sc/NotoSansSC-Medium-Alphabetic.woff2') format("woff2"), url('/webfonts/noto-sans-sc/NotoSansSC-Medium-Alphabetic.woff') format("woff");
+    font-weight: 500;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: "Noto Serif SC";
+    src: url('/webfonts/noto-sans-sc/NotoSerifSC-Regular-Alphabetic.woff2') format("woff2"), url('/webfonts/noto-sans-sc/NotoSerifSC-Regular-Alphabetic.woff') format("woff");
+    font-weight: 500;
+    font-style: normal;
+    font-display: swap;
+}
+
+/* Base styles */
+html {
+    font-family: var(--font-body);
+    background-color: var(--color-dark-black);
+    color: var(--color-off-white);
+    font-size: 4.8vw;
+    /* Mobile base */
+}
+
+@media (min-width: 320px) {
+    html {
+        font-size: 1rem;
+    }
+}
+
+@media (min-width: 600px) {
+    html {
+        font-size: 1rem;
+    }
+}
+
+@media (min-width: 900px) {
+    html {
+        font-size: 1.4vw;
+    }
+}
+
+@media (min-width: 1200px) {
+    html {
+        font-size: 1.2vw;
+    }
+}
+
+@media (min-width: 1400px) {
+    html {
+        font-size: 1.112vw;
+    }
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    font-family: var(--font-headline);
+    text-transform: uppercase;
+    line-height: 1;
+}
+
+.scroll-lock {
+    overflow: hidden;
+}

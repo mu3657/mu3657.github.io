@@ -1,0 +1,66 @@
+---
+import { getCollection } from 'astro:content';
+import Layout from '../../layouts/Layout.astro';
+import Background from '../../components/Background.astro';
+import Header from '../../components/Header.astro';
+import Portrait from '../../components/Portrait.astro';
+import ArchiveItem from '../../components/ArchiveItem.astro';
+
+export async function getStaticPaths() {
+  const allPosts = await getCollection('blog');
+  
+  // Extract all unique tags
+  const uniqueTags = [...new Set(allPosts.map((post) => post.data.tags).flat())];
+
+  return uniqueTags.map((tag) => {
+    const filteredPosts = allPosts.filter((post) => post.data.tags.includes(tag));
+    return {
+      params: { tag },
+      props: { posts: filteredPosts },
+    };
+  });
+}
+
+const { tag } = Astro.params;
+const { posts } = Astro.props;
+
+// Sort by date desc
+posts.sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+---
+
+<Layout title={`Tag: ${tag}`}>
+	<Background />
+	<Header />
+    <Portrait />
+	
+	<!-- Main Content Wrapper -->
+	<div class="flex flex-col md:flex-row min-h-screen w-full relative z-20">
+        <!-- Spacer for Left Column (Portrait) -->
+        <div class="hidden md:block w-full md:w-[44.44%] flex-shrink-0"></div>
+
+		<main class="w-full md:w-[55.55%] flex-grow relative flex flex-col items-stretch pt-[6rem] md:pt-[14rem] px-8 md:px-[--spacing-gutter] pb-16 min-h-screen" 
+			style="background-image: url('/images/single-page-content-bg_htmvo8.png'); background-repeat: repeat-y; background-position: center top; background-size: 100% auto;">
+            
+            <div class="mb-12 text-center md:text-left max-w-3xl mx-auto md:mr-auto md:ml-0">
+                <h1 class="font-headline text-3xl md:text-4xl text-off-white uppercase tracking-widest">
+                    Tag: <span class="text-orange">{tag}</span>
+                </h1>
+                <a href="/" class="inline-block mt-4 text-off-white/70 hover:text-off-white uppercase text-sm tracking-widest border-b border-transparent hover:border-off-white transition-all">
+                    ← Back to All Posts
+                </a>
+            </div>
+
+            <div class="flex flex-col gap-12 max-w-3xl mx-auto md:mr-auto md:ml-0">
+                {posts.map(post => (
+                    <ArchiveItem 
+                        title={post.data.title} 
+                        date={post.data.date.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: '2-digit' })}
+                        tags={post.data.tags}
+                        excerpt={post.data.excerpt}
+                        href={`/posts/${post.slug}`}
+                    />
+                ))}
+            </div>
+		</main>
+	</div>
+</Layout>

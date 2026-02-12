@@ -1,0 +1,89 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Background from '../components/Background.astro';
+import Header from '../components/Header.astro';
+
+const post = {
+    title: "Jamais Vu Update & Huge Thanks For 2021!",
+    date: "February 07, 2022",
+    author: "Dani",
+    categories: ["Development", "Press", "Promotional"],
+    content: `
+        <p class="mb-6 italic text-lg">The Jamais Vu update is now available on PlayStation, Xbox and Switch. Please keep in mind that the update will roll out across various regions so it may not be available immediately. Thank you for your patience.</p>
+        
+        <p class="mb-6">Patch numbers: PS4: 1.16, PS5: 1.0016, XBOX: 1.0.0.6, Switch: 1.04</p>
+        
+        <ul class="list-disc pl-6 space-y-2 mb-6">
+            <li>New secret achievements – time to hunt!</li>
+            <li>Multiple fixes for crashes</li>
+            <li>Gigantic load time optimisations when switching scenes</li>
+            <li>Tons of minor bug fixes all across the game</li>
+            <li>Has Kim always been this hot?</li>
+        </ul>
+        
+        <p><img src="/images/switch-loading-comparison.jpg" alt="Switch Loading Comparison" /></p>
+    `
+};
+---
+
+<Layout>
+	<Background />
+	<Header showSearch={false} />
+	
+	<!-- Main Content Wrapper -->
+	<div class="flex flex-col min-h-screen w-full relative z-20 items-center">
+		
+        <!-- Fixed Background Image (Blog-page-1.png) -->
+        <div class="fixed inset-0 z-0 pointer-events-none" 
+             style="background-image: url('/images/Blog-page-1.png'); background-size: cover; background-position: center;">
+        </div>
+
+		<!-- Centered Content Column -->
+		<main class="w-full md:w-[60%] lg:w-[55%] flex-grow relative flex flex-col pt-[6rem] md:pt-[15vh] min-h-screen pb-[95vh]"
+              style="background-image: url('/images/single-page-content-bg_htmvo8.png'); background-repeat: repeat-y; background-position: center top; background-size: 100% auto;">
+            
+            <div class="relative z-10 px-8 md:px-[--spacing-gutter] w-full">
+                
+                <!-- Title Block -->
+                <div class="relative w-full mb-8 -rotate-1 border-image-source: url('/images/brush-bg-white_kkkkx7.png'); border-image-slice: 0 fill;">
+                     <div class="relative z-10 p-6 md:p-8 bg-[url('/images/brush-bg-white_kkkkx7.png')] bg-no-repeat bg-[length:100%_100%]">
+                        <h1 class="text-dark-black font-headline text-3xl md:text-5xl uppercase leading-none tracking-tight">
+                            {post.title}
+                        </h1>
+                    </div>
+                </div>
+
+                <!-- Metadata Row -->
+                <div class="flex flex-col md:flex-row justify-between items-start w-full text-off-white font-headline text-xs tracking-widest uppercase mb-12 opacity-80">
+                    
+                    <!-- Left Column: Date and Author -->
+                    <div class="flex flex-col gap-2 mb-4 md:mb-0">
+                        <time class="text-lg">{post.date}</time>
+                        <div class="flex items-center gap-2 mt-2">
+                             <span class="opacity-70">BY:</span>
+                             <span class="text-off-white">{post.author}</span>
+                        </div>
+                    </div>
+
+                    <!-- Right Column: Categories -->
+                    <nav class="flex flex-wrap gap-2 md:justify-end">
+                        {post.categories.map((cat, i) => (
+                            <a href="#" class="hover:text-orange transition-colors duration-200">
+                                {cat}{i < post.categories.length - 1 ? ' • ' : ''}
+                            </a>
+                        ))}
+                    </nav>
+                </div>
+
+                <!-- Body Content -->
+                <article class="font-body text-off-white text-base md:text-[1.0625rem] leading-[1.8] opacity-90 prose prose-invert max-w-none prose-p:mb-6 prose-ul:mb-6 prose-img:rounded-md prose-p:first-of-type:italic prose-p:first-of-type:text-lg prose-p:first-of-type:text-off-white/70">
+                    <div set:html={post.content} />
+                </article>
+
+            </div>
+             <!-- Next Post Section would go here -->
+		</main>
+	</div>
+		</main>
+	</div>
+</Layout>

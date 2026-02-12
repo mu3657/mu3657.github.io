@@ -1,0 +1,110 @@
+---
+interface Props {
+  showSearch?: boolean;
+}
+
+const { showSearch = true } = Astro.props;
+---
+
+<header class="fixed top-0 w-full z-50 pointer-events-none">
+    
+<header class="fixed top-0 w-full z-50 pointer-events-none">
+    
+    <!-- Mobile Menu Toggle (Visible only on mobile) -->
+    <div class="fixed top-0 right-0 w-[4.375rem] h-[4.375rem] flex justify-center items-center z-50 pointer-events-auto 
+                bg-[url('/images/menu-toggle.png')] bg-no-repeat bg-right-top bg-contain 
+                md:hidden transition-all duration-300">
+        <button id="menu-toggle" class="w-10 h-10 flex justify-center items-center flex-col relative group z-50" aria-label="Menu">
+            <span class="block w-6 h-0.5 rounded-[2px] my-[2px] bg-off-white transition-opacity group-hover:bg-white menu-bar"></span>
+            <span class="block w-6 h-0.5 rounded-[2px] my-[2px] bg-off-white transition-opacity group-hover:bg-white menu-bar"></span>
+            <span class="block w-6 h-0.5 rounded-[2px] my-[2px] bg-off-white transition-opacity group-hover:bg-white menu-bar"></span>
+        </button>
+    </div>
+
+
+
+    <!-- Desktop Navigation (Visible only on desktop) -->
+    <!-- Z-index 50 ensures it sits above the search bar -->
+    <nav class="hidden md:flex fixed top-0 left-0 w-full justify-center z-50 pt-6 pointer-events-auto">
+        <div class="relative px-16 py-3">
+            <!-- Background Image 
+            <div class="absolute inset-0 w-full h-full -z-1 pointer-events-none" 
+                 style="background-image: url('/images/main-navigation-bg_pc8u1d.png'); background-size: auto 100%; background-position: right center; background-repeat: no-repeat;">
+            </div>
+            -->
+            <ul class="flex space-x-8 text-off-white font-headline text-sm tracking-[0.2em] drop-shadow-md relative z-10">
+                <li><a href="/" class="hover:text-orange transition-colors duration-200">HOME</a></li>
+                <li><a href="/" class="hover:text-orange transition-colors duration-200">BLOG</a></li>
+                <li><a href="/about" class="hover:text-orange transition-colors duration-200">ABOUT</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Mobile Menu Overlay -->
+    <div id="menu-overlay" class="fixed inset-0 bg-dark-black/95 z-40 hidden flex-col justify-center items-center opacity-0 transition-opacity duration-300 pointer-events-auto md:hidden">
+        <nav class="flex flex-col items-center gap-6 text-center">
+            <a href="/" class="text-3xl font-headline text-off-white hover:text-orange uppercase tracking-widest">Home</a>
+            <a href="/" class="text-3xl font-headline text-off-white hover:text-orange uppercase tracking-widest">Blog</a>
+            <a href="/about" class="text-3xl font-headline text-off-white hover:text-orange uppercase tracking-widest">About</a>
+        </nav>
+        <button id="menu-close" class="absolute top-8 right-8 text-off-white hover:text-orange">
+             <img src="/images/close-button_ocmdtj.png" alt="Close" class="w-8 h-8" />
+        </button>
+    </div>
+
+    <script>
+        const menuToggle = document.getElementById('menu-toggle');
+        const menuClose = document.getElementById('menu-close');
+        const menuOverlay = document.getElementById('menu-overlay');
+
+        function toggleMenu() {
+            if (!menuOverlay) return;
+            const isHidden = menuOverlay.classList.contains('hidden');
+            if (isHidden) {
+                menuOverlay.classList.remove('hidden');
+                setTimeout(() => {
+                     menuOverlay.classList.remove('opacity-0');
+                }, 10);
+                document.body.style.overflow = 'hidden';
+            } else {
+                menuOverlay.classList.add('opacity-0');
+                setTimeout(() => {
+                    menuOverlay.classList.add('hidden');
+                }, 300);
+                document.body.style.overflow = '';
+            }
+        }
+
+        menuToggle?.addEventListener('click', toggleMenu);
+        menuClose?.addEventListener('click', toggleMenu);
+    </script>
+
+    <!-- Search Bar (Desktop: Right aligned) -->
+    <!-- Z-index 40 ensures it doesn't block the nav (z-50) -->
+    {showSearch && (
+    <div class="fixed top-0 right-0 w-full md:w-[60%] lg:w-[50%] z-40 flex flex-col items-end pointer-events-none">
+        
+        <!-- Film Strip Background -->
+        <div class="w-full relative flex items-end bg-[url('/images/film-strip-long_a5hufh.png')] bg-repeat-x bg-bottom bg-[length:auto_100%] pointer-events-auto">
+            
+            <div class="w-full relative z-10 text-white 
+                        pt-[0.7rem] pb-[1.3rem] px-[2rem]
+                        md:pt-[5rem] md:pb-[4rem] md:px-[5rem]">
+                
+                <form action="/" method="GET" class="flex relative items-center w-full h-[1.5rem] md:h-[2rem] border-b border-off-white">
+                    <input 
+                        name="q"
+                        placeholder="Search" 
+                        class="h-full w-full flex border-none bg-transparent p-0 pl-4 font-ui text-[0.875rem] uppercase text-off-white placeholder:text-off-white/50 focus:outline-none focus:ring-0" 
+                    />
+                    <button type="submit" class="absolute top-1/2 -translate-y-1/2 right-0 w-4 h-4 p-0 bg-transparent border-none cursor-pointer">
+                        <img src="/assets/icon-search.svg" class="w-full h-full pointer-events-none" alt="Search" />
+                    </button>
+                </form>
+
+            </div>
+        </div>
+    </div>
+    )}
+
+</header>

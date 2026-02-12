@@ -1,0 +1,42 @@
+---
+---
+
+<div id="transition-overlay" class="fixed inset-0 z-[100] pointer-events-none opacity-0 flex items-center justify-center transition-opacity duration-700 ease-out bg-dark-black">
+    <!-- Flare Background -->
+    <img src="/images/feld-flash-flare.jpg" class="absolute inset-0 w-full h-full object-cover mix-blend-screen z-10 opacity-80" alt="" />
+</div>
+
+<script>
+    document.addEventListener('astro:before-preparation', () => {
+        const overlay = document.getElementById('transition-overlay');
+        
+        if (overlay) {
+            // Ensure transition classes are active
+            overlay.classList.add('transition-opacity', 'duration-700');
+
+            // Show overlay
+            overlay.classList.remove('opacity-0');
+        }
+    });
+
+    document.addEventListener('astro:after-swap', () => {
+        const overlay = document.getElementById('transition-overlay');
+        
+        if (overlay) {
+            // 1. STOP animations and force visible state immediately
+            // We must keep it fully visible to hide the page swap
+            overlay.classList.remove('transition-opacity', 'duration-700', 'ease-out');
+            overlay.classList.remove('opacity-0');
+            
+            // 2. Re-enable transitions after a tiny delay so they are ready for the fade out
+            setTimeout(() => {
+                overlay.classList.add('transition-opacity', 'duration-1000', 'ease-out');
+            }, 50);
+
+            // 3. Wait, then fade out
+            setTimeout(() => {
+                overlay.classList.add('opacity-0');
+            }, 700); // Hold for 2 seconds
+        }
+    });
+</script>
