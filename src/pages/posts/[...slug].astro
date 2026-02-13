@@ -3,6 +3,7 @@ import { getCollection } from 'astro:content';
 import Layout from '../../layouts/Layout.astro';
 import Background from '../../components/Background.astro';
 import Header from '../../components/Header.astro';
+import Comments from '../../components/Comments.astro';
 
 export async function getStaticPaths() {
   const blogEntries = await getCollection('blog');
@@ -74,6 +75,7 @@ const formattedDate = entry.data.date.toLocaleDateString('en-US', {
                 <!-- Body Content -->
                 <article class="font-body text-off-white text-base md:text-[1.0625rem] leading-[1.8] opacity-90 prose prose-invert max-w-none prose-p:mb-6 prose-ul:mb-6 prose-img:rounded-md prose-p:first-of-type:italic prose-p:first-of-type:text-lg prose-p:first-of-type:text-off-white/70">
                     <Content />
+                    <Comments />
                 </article>
 
             </div>

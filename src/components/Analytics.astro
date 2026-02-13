@@ -1,0 +1,16 @@
+---
+// Analytics.astro
+// Microsoft Clarity Integration
+// https://clarity.microsoft.com/
+// Replace "YOUR_CLARITY_PROJECT_ID" with your actual Project ID from Clarity dashboard
+
+const CLARITY_PROJECT_ID = "vgt3haphe3";
+---
+
+<script type="text/javascript" define:vars={{ CLARITY_PROJECT_ID }}>
+    (function(c,l,a,r,i,t,y){
+        c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+        t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+        y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+    })(window, document, "clarity", "script", CLARITY_PROJECT_ID);
+</script>

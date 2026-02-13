@@ -2,6 +2,7 @@
 import '../styles/global.css';
 import { ViewTransitions } from 'astro:transitions';
 import Transition from '../components/Transition.astro';
+import Analytics from '../components/Analytics.astro';
 
 interface Props {
 	title?: string;
@@ -19,6 +20,7 @@ const { title = "Disco Elysium Archive" } = Astro.props;
 		<meta name="generator" content={Astro.generator} />
 		<title>{title}</title>
 		<ViewTransitions />
+        <Analytics />
 	</head>
 	<body>
 		<Transition />
