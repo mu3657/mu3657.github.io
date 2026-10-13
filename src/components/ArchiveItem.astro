@@ -5,12 +5,25 @@ interface Props {
 	tags: string[];
 	excerpt: string;
 	href: string;
+    cover?: string;
 }
 
-const { title, date, tags, excerpt, href } = Astro.props;
+const { title, date, tags, excerpt, href, cover } = Astro.props;
 ---
 
 <article class="w-full mb-16 relative group">
+    {cover ? (
+        <a href={href} class="block focus-visible:outline focus-visible:outline-2 focus-visible:outline-orange focus-visible:outline-offset-4">
+            <div class="aspect-video w-full overflow-hidden border border-off-white/20">
+                <img src={cover} alt="" loading="lazy" decoding="async"
+                    class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-[1.02]" />
+            </div>
+            <h2 class="mt-5 font-headline text-2xl md:text-3xl text-off-white uppercase leading-tight group-hover:text-orange transition-colors">
+                {title}
+            </h2>
+        </a>
+    ) : (
+    <>
     <!-- Meta Header (Date & Tags) -->
     <div class="flex justify-between text-off-white font-headline text-xs tracking-widest mb-2 uppercase opacity-80">
         <span>{date}</span>
@@ -41,6 +54,8 @@ const { title, date, tags, excerpt, href } = Astro.props;
     <p class="text-off-white font-body text-base md:text-lg leading-relaxed opacity-90">
         {excerpt}
     </p>
+    </>
+    )}
 
     <!-- Separator (optional, based on design) -->
     <div class="w-full h-px bg-off-white/20 mt-8"></div>

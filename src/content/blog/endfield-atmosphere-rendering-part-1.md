@@ -2,6 +2,7 @@
 title: "《明日方舟：终末地》大气渲染解析（一）：从 T-LUT、MS-LUT 到 Sky-View LUT"
 date: 2026-09-03
 author: "Muxi"
+cover: "/images/hgrp-atmosphere-part1/cover.jpg"
 tags: ["Rendering", "Atmosphere", "Reverse Engineering", "HGRP"]
 excerpt: "基于《明日方舟：终末地》的一帧 Vulkan RenderDoc 截帧，解析 HGRP 如何连续生成 Transmittance LUT、Multiple-Scattering LUT 与 Sky-View LUT。"
 ---

@@ -10,13 +10,6 @@ const allPosts = await getCollection('blog');
 // Sort by date desc
 allPosts.sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
 
-// Client-side search (handled during SSR for this example, or via JS if truly static)
-// Since Astro is static by default, this query param check happens at build time for SSG, 
-// OR at runtime for SSR. If output is static, this won't work dynamically without JS.
-// However, for a simple blog, we can use a script to filter DOM elements, 
-// OR simple JS filter if using 'server' output. 
-// Given the user constraint, let's stick to a JS-based filter on the client side 
-// to support static hosting without a backend.
 ---
 
 <Layout>
@@ -48,6 +41,7 @@ allPosts.sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
                             date={post.data.date.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: '2-digit' })}
                             tags={post.data.tags}
                             excerpt={post.data.excerpt}
+                            cover={post.data.cover}
                             href={`/posts/${post.slug}`}
                         />
                     </div>
@@ -58,45 +52,56 @@ allPosts.sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
                 No thoughts found matching your criteria.
             </div>
 
-            <div class="text-center py-12 font-headline text-2xl uppercase text-off-white/50 tracking-widest hover:text-off-white transition-colors cursor-pointer">
+            <button id="load-more" type="button" aria-controls="posts-container"
+                class="hidden text-center py-12 font-headline text-2xl uppercase text-off-white/50 tracking-widest hover:text-off-white transition-colors cursor-pointer focus-visible:outline focus-visible:outline-2 focus-visible:outline-orange">
                 Load More...
-            </div>
+            </button>
 		</main>
 	</div>
 
     <script>
-        // Client-side search logic
-        const urlParams = new URLSearchParams(window.location.search);
-        const query = urlParams.get('q')?.toLowerCase();
+        function initializePostList() {
+            const container = document.getElementById('posts-container');
+            const loadMore = document.getElementById('load-more');
+            if (!container || !(loadMore instanceof HTMLButtonElement)) return;
 
-        if (query) {
+            const pageSize = 3;
+            let visibleCount = pageSize;
+            const query = new URLSearchParams(window.location.search).get('q')?.trim().toLowerCase() || '';
             const searchStatus = document.getElementById('search-status');
             const searchTermSpan = document.getElementById('search-term');
             const noResults = document.getElementById('no-results');
-            const posts = document.querySelectorAll('.post-item');
-            let hasResults = false;
-
-            if (searchStatus && searchTermSpan) {
-                searchStatus.classList.remove('hidden');
-                searchTermSpan.textContent = query;
-            }
-
-            posts.forEach(post => {
-                const title = post.getAttribute('data-title') || '';
-                const tags = post.getAttribute('data-tags') || '';
-                const excerpt = post.getAttribute('data-excerpt') || '';
-
-                if (title.includes(query) || tags.includes(query) || excerpt.includes(query)) {
-                    (post as HTMLElement).classList.remove('hidden');
-                    hasResults = true;
-                } else {
-                    (post as HTMLElement).classList.add('hidden');
-                }
+            const posts = Array.from(container.querySelectorAll<HTMLElement>('.post-item'));
+            const matchingPosts = posts.filter(post => {
+                const title = post.dataset.title || '';
+                const tags = post.dataset.tags || '';
+                const excerpt = post.dataset.excerpt || '';
+                return !query || title.includes(query) || tags.includes(query) || excerpt.includes(query);
             });
 
-            if (!hasResults && noResults) {
-                noResults.classList.remove('hidden');
+            if (searchStatus && searchTermSpan) {
+                searchStatus.classList.toggle('hidden', !query);
+                searchTermSpan.textContent = query;
             }
+            noResults?.classList.toggle('hidden', matchingPosts.length > 0);
+
+            function updateList() {
+                posts.forEach(post => post.classList.add('hidden'));
+                matchingPosts.slice(0, visibleCount).forEach(post => post.classList.remove('hidden'));
+                loadMore.classList.toggle('hidden', visibleCount >= matchingPosts.length);
+            }
+
+            loadMore.onclick = () => {
+                const firstNewPost = matchingPosts[visibleCount];
+                visibleCount += pageSize;
+                updateList();
+                if (loadMore.classList.contains('hidden')) {
+                    firstNewPost?.querySelector<HTMLAnchorElement>('a[href^="/posts/"]')?.focus({ preventScroll: true });
+                }
+            };
+            updateList();
         }
+
+        document.addEventListener('astro:page-load', initializePostList);
     </script>
 </Layout>

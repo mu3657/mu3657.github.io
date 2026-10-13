@@ -57,6 +57,7 @@ posts.sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
                         date={post.data.date.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: '2-digit' })}
                         tags={post.data.tags}
                         excerpt={post.data.excerpt}
+                        cover={post.data.cover}
                         href={`/posts/${post.slug}`}
                     />
                 ))}
